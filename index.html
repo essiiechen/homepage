@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>陈静 · 个人主页</title>
+<meta name="description" content="陈静 — 国际商务硕士研究生 · 数据驱动的商业研究者。关注 AI 与劳动力市场、国际贸易与数据可视化。" />
+<style>
+  :root {
+    --bg: #05070f;
+    --bg-2: #0a0f1e;
+    --panel: rgba(18, 24, 46, 0.55);
+    --border: rgba(120, 150, 255, 0.14);
+    --text: #e9edfb;
+    --muted: #98a2c3;
+    --blue: #5b8cff;
+    --violet: #9d6bff;
+    --cyan: #4dd6ff;
+    --grad: linear-gradient(120deg, #5b8cff 0%, #9d6bff 55%, #4dd6ff 120%);
+    --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+    --font-mono: "SF Mono", "JetBrains Mono", ui-monospace, "Menlo", monospace;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--font-sans);
+    background:
+      radial-gradient(1200px 800px at 80% -10%, rgba(93, 108, 255, 0.16), transparent 60%),
+      radial-gradient(1000px 700px at 10% 20%, rgba(157, 107, 255, 0.12), transparent 55%),
+      linear-gradient(180deg, var(--bg) 0%, var(--bg-2) 100%);
+    color: var(--text);
+    min-height: 100vh;
+    line-height: 1.7;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* 星空画布 */
+  #stars {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  .glow {
+    position: fixed;
+    width: 46vw;
+    height: 46vw;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(91,140,255,0.10), transparent 65%);
+    filter: blur(10px);
+    z-index: 0;
+    pointer-events: none;
+    transform: translate(-50%, -50%);
+    transition: opacity .3s;
+  }
+
+  .wrap {
+    position: relative;
+    z-index: 2;
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 0 28px;
+  }
+
+  /* 顶部导航 */
+  header {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 20;
+    backdrop-filter: blur(16px) saturate(140%);
+    background: rgba(5, 7, 15, 0.55);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 14px 28px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .logo {
+    font-family: var(--font-mono);
+    font-size: 15px;
+    letter-spacing: .5px;
+    background: var(--grad);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    font-weight: 700;
+  }
+  .nav-links { display: flex; gap: 26px; }
+  .nav-links a {
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 14px;
+    transition: color .25s;
+  }
+  .nav-links a:hover { color: var(--text); }
+
+  /* Hero */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 120px 0 80px;
+  }
+  .eyebrow {
+    font-family: var(--font-mono);
+    color: var(--cyan);
+    font-size: 14px;
+    letter-spacing: 3px;
+    margin-bottom: 22px;
+    opacity: .9;
+  }
+  .name {
+    font-size: clamp(52px, 9vw, 92px);
+    font-weight: 800;
+    letter-spacing: -1px;
+    line-height: 1.05;
+    background: linear-gradient(180deg, #ffffff 0%, #c7d2ff 60%, #8fb0ff 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .tagline {
+    margin-top: 20px;
+    font-size: clamp(18px, 2.6vw, 26px);
+    color: var(--muted);
+    font-weight: 400;
+  }
+  .tagline .cursor {
+    display: inline-block;
+    width: 2px; height: 1.1em;
+    background: var(--cyan);
+    margin-left: 4px;
+    vertical-align: -2px;
+    animation: blink 1s steps(1) infinite;
+  }
+  @keyframes blink { 50% { opacity: 0; } }
+
+  .intro {
+    margin-top: 30px;
+    max-width: 640px;
+    color: #c3cbe4;
+    font-size: 17px;
+  }
+  .intro b, .intro strong {
+    color: #fff;
+    font-weight: 600;
+  }
+  .accent { color: var(--cyan); font-weight: 600; }
+
+  .tags {
+    margin-top: 30px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .tag {
+    font-size: 13px;
+    padding: 7px 15px;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    background: rgba(91, 140, 255, 0.08);
+    color: #b9c6f2;
+    font-family: var(--font-mono);
+    letter-spacing: .3px;
+    transition: all .3s;
+  }
+  .tag:hover {
+    border-color: rgba(91,140,255,.55);
+    background: rgba(91,140,255,.16);
+    color: #fff;
+    transform: translateY(-2px);
+  }
+
+  .cta-row {
+    margin-top: 40px;
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    padding: 13px 26px;
+    border-radius: 12px;
+    font-size: 15px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: transform .25s, box-shadow .25s, background .25s;
+  }
+  .btn-primary {
+    color: #fff;
+    background: var(--grad);
+    box-shadow: 0 8px 30px rgba(91, 140, 255, 0.35);
+  }
+  .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 14px 40px rgba(91,140,255,.5); }
+  .btn-ghost {
+    color: var(--text);
+    border: 1px solid var(--border);
+    background: rgba(18,24,46,.5);
+  }
+  .btn-ghost:hover { transform: translateY(-3px); border-color: rgba(120,150,255,.4); }
+
+  .scroll-hint {
+    position: absolute;
+    bottom: 34px; left: 50%;
+    transform: translateX(-50%);
+    color: var(--muted);
+    font-size: 12px;
+    letter-spacing: 2px;
+    animation: float 2.4s ease-in-out infinite;
+  }
+  @keyframes float { 50% { transform: translate(-50%, -8px); } }
+
+  /* 通用 section */
+  section { padding: 90px 0; }
+  .sec-label {
+    font-family: var(--font-mono);
+    color: var(--cyan);
+    font-size: 13px;
+    letter-spacing: 3px;
+    margin-bottom: 14px;
+  }
+  .sec-title {
+    font-size: clamp(28px, 4vw, 40px);
+    font-weight: 700;
+    letter-spacing: -.5px;
+    margin-bottom: 20px;
+  }
+
+  /* 关于 / 兴趣 */
+  .about-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 18px;
+    margin-top: 12px;
+  }
+  .card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    padding: 26px;
+    backdrop-filter: blur(12px);
+    transition: transform .3s, border-color .3s, box-shadow .3s;
+  }
+  .card:hover {
+    transform: translateY(-5px);
+    border-color: rgba(120,150,255,.35);
+    box-shadow: 0 18px 50px rgba(20, 30, 80, 0.55);
+  }
+  .card .icon { font-size: 26px; margin-bottom: 14px; }
+  .card h3 { font-size: 17px; margin-bottom: 8px; }
+  .card p { color: var(--muted); font-size: 14.5px; }
+
+  /* 项目 */
+  .projects { display: grid; gap: 20px; }
+  .project {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 30px;
+    backdrop-filter: blur(12px);
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 24px;
+    align-items: start;
+    transition: transform .3s, border-color .3s, box-shadow .3s;
+  }
+  .project:hover {
+    transform: translateY(-4px);
+    border-color: rgba(120,150,255,.4);
+    box-shadow: 0 20px 60px rgba(20, 30, 80, 0.6);
+  }
+  .project .p-icon {
+    font-size: 34px;
+    width: 58px; height: 58px;
+    display: grid; place-items: center;
+    border-radius: 14px;
+    background: linear-gradient(135deg, rgba(91,140,255,.18), rgba(157,107,255,.18));
+    border: 1px solid var(--border);
+  }
+  .project h3 { font-size: 20px; margin-bottom: 8px; }
+  .project p { color: var(--muted); font-size: 15px; }
+  .project .p-meta {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--cyan);
+    white-space: nowrap;
+    padding-top: 4px;
+    opacity: .9;
+  }
+
+  /* 联系 */
+  .contact-box {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    padding: 50px 40px;
+    text-align: center;
+    backdrop-filter: blur(12px);
+  }
+  .contact-box p { color: var(--muted); margin-bottom: 26px; }
+  .mail {
+    display: inline-block;
+    font-size: 20px;
+    font-weight: 600;
+    color: #fff;
+    text-decoration: none;
+    background: var(--grad);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    word-break: break-all;
+  }
+  .mail:hover { opacity: .85; }
+
+  footer {
+    padding: 40px 0 60px;
+    text-align: center;
+    color: var(--muted);
+    font-size: 13px;
+    font-family: var(--font-mono);
+    letter-spacing: 1px;
+  }
+  footer .star { color: var(--cyan); }
+
+  /* 渐入动画 */
+  .reveal {
+    opacity: 0;
+    transform: translateY(26px);
+    transition: opacity .7s ease, transform .7s ease;
+  }
+  .reveal.in { opacity: 1; transform: none; }
+
+  @media (max-width: 640px) {
+    .project { grid-template-columns: 1fr; gap: 16px; }
+    .project .p-meta { white-space: normal; }
+    .nav-links { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<canvas id="stars"></canvas>
+<div class="glow" id="glow"></div>
+
+<header>
+  <div class="nav">
+    <div class="logo">chenjing.dev</div>
+    <nav class="nav-links">
+      <a href="#about">关于</a>
+      <a href="#projects">项目</a>
+      <a href="#contact">联系</a>
+    </nav>
+  </div>
+</header>
+
+<div class="wrap">
+  <!-- HERO -->
+  <section class="hero" style="position:relative;">
+    <div class="eyebrow">✦ HELLO, I'M</div>
+    <h1 class="name">陈静</h1>
+    <div class="tagline"><span id="typed"></span><span class="cursor"></span></div>
+    <p class="intro">
+      你好，我是<strong>陈静</strong>，一名<strong>国际商务</strong>方向的硕士研究生。
+      我关注<b>贸易与技术交汇处的真实世界</b>——从全球价值链到人工智能对劳动力市场的冲击，
+      相信<span class="accent">数据 + 代码</span>是把抽象的经济叙事变成可验证结论的那把钥匙。
+    </p>
+    <div class="tags">
+      <span class="tag">国际商务</span>
+      <span class="tag">Python</span>
+      <span class="tag">数据分析</span>
+      <span class="tag">计量经济学</span>
+      <span class="tag">数据可视化</span>
+      <span class="tag">AI · 劳动力市场</span>
+    </div>
+    <div class="cta-row">
+      <a class="btn btn-primary" href="mailto:26210680266@m.fudan.edu.cn">📬 联系我</a>
+      <a class="btn btn-ghost" href="#projects">查看项目 ↓</a>
+    </div>
+    <div class="scroll-hint">SCROLL</div>
+  </section>
+
+  <!-- 关于 -->
+  <section id="about">
+    <div class="sec-label reveal">01 · ABOUT</div>
+    <h2 class="sec-title reveal">我在做什么</h2>
+    <div class="about-grid">
+      <div class="card reveal">
+        <div class="icon">🌐</div>
+        <h3>全球视野</h3>
+        <p>研究国际贸易、全球价值链与企业跨境经营，关注规则与制度如何塑造商业版图。</p>
+      </div>
+      <div class="card reveal">
+        <div class="icon">🤖</div>
+        <h3>AI 与就业</h3>
+        <p>追踪 AI 对高校毕业生就业的影响，构建岗位级 AI 暴露指数，理解技术变迁的分配效应。</p>
+      </div>
+      <div class="card reveal">
+        <div class="icon">📊</div>
+        <h3>数据驱动</h3>
+        <p>用 Python 清洗、建模与可视化，让经济学问题变得可观察、可验证、可复现。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 项目 -->
+  <section id="projects">
+    <div class="sec-label reveal">02 · PROJECTS</div>
+    <h2 class="sec-title reveal">近期项目</h2>
+    <div class="projects">
+      <div class="project reveal">
+        <div class="p-icon">📈</div>
+        <div>
+          <h3>AI 就业监测小站</h3>
+          <p>抓取并整理招聘平台数据，追踪人工智能相关岗位的需求变化，结合宏观经济指标分析行业趋势，输出可视化周报。</p>
+        </div>
+        <div class="p-meta">计量经济学 · 课程设计</div>
+      </div>
+      <div class="project reveal">
+        <div class="p-icon">🧠</div>
+        <div>
+          <h3>中文 AI 暴露指数</h3>
+          <p>基于 LLM 时代的方法论，构建岗位/专业层面的中文 AI 暴露指数，刻画 AI 对不同职业与毕业生群体的差异化冲击。</p>
+        </div>
+        <div class="p-meta">研究 · 毕业论文</div>
+      </div>
+      <div class="project reveal">
+        <div class="p-icon">🗺️</div>
+        <div>
+          <h3>就业质量报告可视化</h3>
+          <p>对高校就业质量报告与就业蓝皮书进行结构化清洗与可视化，呈现分专业、分行业的就业结构与起薪差异。</p>
+        </div>
+        <div class="p-meta">数据科学 · 个人项目</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 联系 -->
+  <section id="contact">
+    <div class="contact-box reveal">
+      <div class="sec-label reveal" style="color:var(--cyan);">03 · CONTACT</div>
+      <h2 class="sec-title reveal">聊聊？</h2>
+      <p>如果你对我的研究感兴趣，或者有任何交流、合作的想法，欢迎随时给我写信。</p>
+      <a class="mail" href="mailto:26210680266@m.fudan.edu.cn">26210680266@m.fudan.edu.cn</a>
+    </div>
+  </section>
+
+  <footer>
+    <span class="star">✦</span> 陈静 · 2026 — 仰望星空，脚踏实地 <span class="star">✦</span>
+  </footer>
+</div>
+
+<script>
+  // ---------- 星空粒子 + 流星 ----------
+  const canvas = document.getElementById('stars');
+  const ctx = canvas.getContext('2d');
+  let W, H, stars = [], meteors = [];
+
+  function resize() {
+    W = canvas.width = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+  }
+  window.addEventListener('resize', resize);
+  resize();
+
+  const STAR_COUNT = Math.min(240, Math.floor(W * H / 6000));
+  for (let i = 0; i < STAR_COUNT; i++) {
+    stars.push({
+      x: Math.random() * W,
+      y: Math.random() * H,
+      r: Math.random() * 1.4 + 0.3,
+      a: Math.random(),
+      sp: Math.random() * 0.02 + 0.004,
+      drift: (Math.random() - 0.5) * 0.06,
+      hue: Math.random() < 0.18 ? 'cyan' : (Math.random() < 0.5 ? 'blue' : 'white')
+    });
+  }
+
+  function spawnMeteor() {
+    if (meteors.length > 3) return;
+    meteors.push({
+      x: Math.random() * W * 0.8 + W * 0.1,
+      y: Math.random() * H * 0.4,
+      vx: -(Math.random() * 6 + 4),
+      vy: (Math.random() * 2 + 1.5),
+      life: 1
+    });
+  }
+
+  function tick() {
+    ctx.clearRect(0, 0, W, H);
+
+    // 星星
+    for (const s of stars) {
+      s.a += s.sp;
+      s.x += s.drift;
+      if (s.x < 0) s.x = W;
+      if (s.x > W) s.x = 0;
+      const alpha = 0.35 + Math.abs(Math.sin(s.a)) * 0.65;
+      ctx.beginPath();
+      ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+      if (s.hue === 'cyan') ctx.fillStyle = `rgba(120, 220, 255, ${alpha})`;
+      else if (s.hue === 'blue') ctx.fillStyle = `rgba(160, 185, 255, ${alpha})`;
+      else ctx.fillStyle = `rgba(255, 255, 255, ${alpha})`;
+      ctx.fill();
+    }
+
+    // 流星
+    if (Math.random() < 0.006) spawnMeteor();
+    for (let i = meteors.length - 1; i >= 0; i--) {
+      const m = meteors[i];
+      m.x += m.vx; m.y += m.vy; m.life -= 0.012;
+      if (m.life <= 0) { meteors.splice(i, 1); continue; }
+      const grad = ctx.createLinearGradient(m.x, m.y, m.x - m.vx * 8, m.y - m.vy * 8);
+      grad.addColorStop(0, `rgba(180, 210, 255, ${m.life})`);
+      grad.addColorStop(1, 'rgba(180, 210, 255, 0)');
+      ctx.strokeStyle = grad;
+      ctx.lineWidth = 1.6;
+      ctx.beginPath();
+      ctx.moveTo(m.x, m.y);
+      ctx.lineTo(m.x - m.vx * 8, m.y - m.vy * 8);
+      ctx.stroke();
+    }
+
+    requestAnimationFrame(tick);
+  }
+  tick();
+
+  // ---------- 鼠标光晕 ----------
+  const glow = document.getElementById('glow');
+  let mx = W / 2, my = H / 2;
+  window.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+  function moveGlow() {
+    glow.style.left = mx + 'px';
+    glow.style.top = my + 'px';
+    requestAnimationFrame(moveGlow);
+  }
+  moveGlow();
+
+  // ---------- 打字机 ----------
+  const typed = document.getElementById('typed');
+  const phrases = [
+    '国际商务 · 硕士研究生',
+    '数据与代码的探索者',
+    '关注 AI 与劳动力市场',
+    '仰望星空，脚踏实地 ✦'
+  ];
+  let pi = 0, ci = 0, deleting = false;
+  function type() {
+    const cur = phrases[pi];
+    typed.textContent = cur.slice(0, ci);
+    if (!deleting) {
+      ci++;
+      if (ci > cur.length) { deleting = true; setTimeout(type, 1800); return; }
+      setTimeout(type, 90);
+    } else {
+      ci--;
+      if (ci < 0) {
+        deleting = false; ci = 0;
+        pi = (pi + 1) % phrases.length;
+        setTimeout(type, 300);
+        return;
+      }
+      setTimeout(type, 40);
+    }
+  }
+  type();
+
+  // ---------- 滚动渐入 ----------
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+</script>
+</body>
+</html>
